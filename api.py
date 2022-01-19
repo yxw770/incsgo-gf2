@@ -1,6 +1,8 @@
 # pip3 install beautifulsoup4
 # pip3 install requests
 # pip3 install lxml
+import time
+
 import requests
 import re, random, json
 from bs4 import BeautifulSoup
@@ -191,9 +193,10 @@ def readUser(num):
             # r = requests.get('https://www.incsgo.gg/user/' + str(num), headers=headers, proxy=proxy[proxyid]);
         print(r.status_code)
         if r.status_code != 200:
-            print('请更换ip！！');
+            print('请更换ip！！',r.text);
 
             flag = 1;
+            time.sleep(30)
             return;
         flag = 0;
         json_data = json.loads(r.text);
@@ -220,9 +223,10 @@ def readUser(num):
         else:
             print("No match1!");
 
-    except requests.exceptions.ConnectionError as e:
+    except:
+        flag = 1;
         print("连接超时，重试中,序号：" + str(num))
-        readUser(num);
+        return;
     return;
     print("Read user No." + str(num));
     soup = BeautifulSoup(r.text, 'lxml');  # lxml为解析器
@@ -276,6 +280,7 @@ def main():
         readUser(num);
         if flag == 0:
             num += 1;
+
     print("Project is finish!")
 
 
