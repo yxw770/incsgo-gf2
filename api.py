@@ -175,7 +175,7 @@ def readUser(num):
         'Accept': '*/*',
         'x-requested-with': 'XMLHttpRequest',
         'content-type': 'application/json;charset=UTF-8',
-        'Cookie': 'JSESSIONID=497BF12BAC37806EAA0801E5073440D7',
+        # 'Cookie': 'JSESSIONID=497BF12BAC37806EAA0801E5073440D7',
 
         # 'cookie':'_ga=GA1.2.1056926965.1642555602; _gid=GA1.2.1079217377.1642555602; sky_session=1483613040360947712; JSESSIONID=A2454EB09B18D48540421DCDFD94CEC5; _gat=1'
     }
@@ -190,7 +190,7 @@ def readUser(num):
             # 本地
 
             r = requests.post('http://www.incsgo.gg/api/user/getUserOpenList', headers=headers, data=json.dumps(data),
-                              timeout=5,proxies=proxy);
+                              timeout=5);
 
         else:
             # 启动代理
@@ -206,8 +206,11 @@ def readUser(num):
             return;
         flag = 0;
         json_data = json.loads(r.text);
+        print(json_data)
         if json_data and json_data['code'] and json_data['code'] == "200" and json_data['data'] and json_data['data'][
             'result']:
+            print(json_data['code'],json_data['code']=='500')
+
             list_data = json_data['data']['result'];
 
             if list_data['user_info'] and list_data['user_info']['name']:
@@ -227,6 +230,10 @@ def readUser(num):
             else:
                 print("No match2!");
         else:
+            if json_data['code'] == '500':
+                flag = 1;
+                print("ip可能给ban了，连接超时，重试中,序号：" + str(num))
+                return;
             print("No match1!");
 
     except:
@@ -266,7 +273,7 @@ def readUser(num):
         print("No match!!");
 
 
-# res = os.system('ping 8.8.8.8')
+# res = os.system('ping 8.8.8.8')400624
 # 没有网络的时候res为True
 # if res:
 #   os.system('@Rasdial 宽带连接 /DISCONNECT')  # 先断开宽带连接（这个宽带连接是你的网络名字，可以叫做别的）
@@ -286,7 +293,7 @@ def main():
         readUser(num);
         if flag == 0:
             num += 1;
-
+        time.sleep(0.5)
     print("Project is finish!")
 
 
