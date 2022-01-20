@@ -9,7 +9,13 @@ from bs4 import BeautifulSoup
 import threading
 
 proxy = {
-    "120.196.112.6:3128"
+    "https": "182.107.181.219:37581",
+    "https": "111.76.171.86:28308",
+    "https": "218.1.200.55:36451",
+    "https": "116.169.45.229:21970",
+    "https": "171.43.14.230:29755",
+    "https": "58.53.44.225:27527",
+    "https": "119.5.146.24:26624",
 };
 proxyid = -1
 useragents = ["Mozilla/5.0 (Android; Linux armv7l; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 Fennec/10.0.1",
@@ -184,7 +190,7 @@ def readUser(num):
             # 本地
 
             r = requests.post('http://www.incsgo.gg/api/user/getUserOpenList', headers=headers, data=json.dumps(data),
-                              timeout=5);
+                              timeout=5,proxies=proxy);
 
         else:
             # 启动代理
@@ -193,7 +199,7 @@ def readUser(num):
             # r = requests.get('https://www.incsgo.gg/user/' + str(num), headers=headers, proxy=proxy[proxyid]);
         print(r.status_code)
         if r.status_code != 200:
-            print('请更换ip！！',r.text);
+            print('请更换ip！！', r.text);
 
             flag = 1;
             time.sleep(30)
